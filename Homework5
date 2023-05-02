@@ -1,0 +1,125 @@
+#Создать программный файл в текстовом формате, записать в него построчно данные, вводимые пользователем.
+#Об окончании ввода данных будет свидетельствовать пустая строка.
+
+my_file = open('file.txt', 'w')
+line = input('Введите текст: \n')
+
+while line:
+    my_file.writelines(line)
+    line = input('Введите текст: \n')
+    if not line:
+        break
+
+my_file.close()
+my_file = open('file.txt', 'r')
+content = my_file.readlines()
+print(content)
+my_file.close()
+
+#Создать текстовый файл (не программно), сохранить в нём несколько строк,
+#выполнить подсчёт строк и слов в каждой строке.
+
+my_file = open('file.txt', 'r')
+content = my_file.read()
+print(f'Содержимое файла: \n {content}')
+my_file = open('file.txt', 'r')
+content = my_file.readlines()
+print(f'Количество строк в файле: {len(content)}')
+my_file = open('file.txt', 'r')
+content = my_file.readlines()
+my_file = open('file.txt', 'r')
+content = my_file.read()
+content = content.split()
+print(f'Количество слов: {len(content)}')
+my_file.close()
+
+#Создать текстовый файл (не программно).
+#Построчно записать фамилии сотрудников и величину их окладов (не менее 10 строк).
+#Определить, кто из сотрудников имеет оклад менее 20 тысяч, вывести фамилии этих сотрудников.
+#Выполнить подсчёт средней величины дохода сотрудников.
+
+import sys
+
+
+MINIMAL_SALARY = 20000
+FILENAME = 'employees.txt'
+
+try:
+    with open(FILENAME, 'r') as fh:
+        employees = fh.readlines()
+except IOError as e:
+    print(e)
+    sys.exit(1)
+
+summ_salary = 0
+
+for employee in employees:
+    name, salary = employee.split()
+
+    try:
+        salary = float(salary)
+    except ValueError:
+        continue
+
+    summ_salary += salary
+    if salary < MINIMAL_SALARY:
+        print(name)
+
+print('Average salary: ', round(summ_salary / len(employees), 2))
+
+#Напишите программу, открывающую файл на чтение и считывающую построчно данные.
+#При этом английские числительные должны заменяться на русские.
+#Новый блок строк должен записываться в новый текстовый файл.
+
+rus = {'One' : 'Один', 'Two' : 'Два', 'Three' : 'Три', 'Four' : 'Четыре'}
+new_file = []
+
+with open('file1.txt', 'r') as file_obj:
+
+    for i in file_obj:
+        i = i.split(' ', 1)
+        new_file.append(rus[i[0]] + '  ' + i[1])
+    print(new_file)
+
+#Создать (программно) текстовый файл, записать в него программно набор чисел, разделённых пробелами.
+#Программа должна подсчитывать сумму чисел в файле и выводить её на экран.
+
+def summary():
+    try:
+        with open('file_sum.txt', 'w+') as file_obj:
+            line = input('Введите числа через пробел \n')
+            file_obj.writelines(line)
+            my_numb = line.split()
+
+            print(sum(map(int, my_numb)))
+
+    except ValueError:
+        print('Кажется, вы ввели не только числа. Ошибка')
+summary()
+
+#Сформировать (не программно) текстовый файл.
+#В нём каждая строка должна описывать учебный предмет и наличие лекционных, практических и лабораторных занятий по предмету.
+#Сюда должно входить и количество занятий. Необязательно, чтобы для каждого предмета были все типы занятий.
+#Сформировать словарь, содержащий название предмета и общее количество занятий по нему. Вывести его на экран.
+
+FILENAME = "school.txt"
+
+subjects = {}
+
+try:
+    with open(FILENAME) as fh:
+        lines = fh.readlines()
+
+    for line in lines:
+        data = line.replace('(', ' ').split()
+
+        subjects[data[0][:-1]] = sum(
+            int(i) for i in data if i.isdigit()
+        )
+
+except ValueError:
+    print("Что-то не так с файлом")
+
+print(subjects)
+
+#7 задание я сделать не смогла, увы
